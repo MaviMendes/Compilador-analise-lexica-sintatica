@@ -21,7 +21,7 @@ add_sub "++"|"--"
 "while"	                    { return WHILE; }
 "if"	                    { return IF; }
 [-]?{digit}+                { return NUMERO; }
-{alpha}({alpha}|{underscore})*   { return NOME; }
+{alpha}({alpha})*({underscore})*  { return NOME; }
 {add_sub}                     { return ADDSUB; } 
 "<="                        { return LE; }
 ">="                        { return GE; }

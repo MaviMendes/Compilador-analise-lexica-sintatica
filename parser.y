@@ -13,16 +13,16 @@
     int search(char *);
     void insert_type();
 
-    struct dataType {
-        char * id_name;
-        char * data_type;
-        char * type;
-        int line_no;
+    struct info_dado {
+        char * nome_id;
+        char * tipo_dado;
+        char * tipo;
+        int linha;
     } symbol_table[40];
 
     int count=0;
     int q;
-    char type[10];
+    char tipo[10];
     extern int countn;
 %}
 
@@ -32,11 +32,15 @@
 
 
 
-program: FN { add('F'); } NOME  '(' parametros ')' '{' corpo return'}'
-| FN MAIN { add('F'); } '(' ')' '{' corpo return'}'
+programa: lista_funcoes
 ;
 
-funcao: FN { add('F'); } NOME  '(' parametros ')' '{' corpo return'}'
+lista_funcoes: funcao 
+| funcao lista_funcoes
+;
+
+funcao: FN  NOME { add('F'); } '(' parametros ')' '{' corpo return'}'
+| FN  NOME { add('F'); } '(' ')' '{' corpo return'}'
 ;
 
 parametros: NOME { add('V'); }
@@ -44,13 +48,11 @@ parametros: NOME { add('V'); }
 ;
 
 corpo: expressoes
-| proposicao
+|proposicao
 |corpo corpo
 ;
 
 expressoes: declaracaoVariavel
-//|IF { add('k'); } NOME { add('V'); } 
-//| WHILE { add('K'); } NUMERO { add('C'); } 
 | NOME { add('V'); } binarias NOME { add('V'); }
 | NOME { add('V'); } binarias NUMERO { add('C'); }
 | NUMERO { add('C'); } binarias NUMERO { add('C'); }
@@ -85,19 +87,16 @@ valor: NUMERO { add('C'); }
 proposicao: declaracaoVariavel
 | atribuicao
 | desvioFluxo
-| laco 
-//| IF { add('K'); } expressoes '{' corpo '}'
-//| WHILE { add('K'); } expressoes '{' corpo '}'
 | valor ADDSUB
 | return 
 | funcao
 |
 ;
 
-desvioFluxo: IF { add('K'); } condicao '{' corpo '}'
+desvioFluxo: IF  { add('K'); } condicao '{' corpo '}'
+| WHILE { add('K');} condicao '{' corpo '}'
 ;
-laco: WHILE { add('K');} condicao '{' corpo '}'
-;
+
 
 // identificadores: Um identificador (nome) é uma letra, opcionalmente seguida por letras e underscores “_”.
 
@@ -119,19 +118,19 @@ int main() {
 	printf("_______________________________________\n\n");
 	int i=0;
 	for(i=0; i<count; i++) {
-		printf("%s\t%s\t%s\t%d\t\n", symbol_table[i].id_name, symbol_table[i].data_type, symbol_table[i].type, symbol_table[i].line_no);
+		printf("%s\t%s\t%s\t%d\t\n", symbol_table[i].nome_id, symbol_table[i].tipo_dado, symbol_table[i].tipo, symbol_table[i].linha);
 	}
 	for(i=0;i<count;i++) {
-		free(symbol_table[i].id_name);
-		free(symbol_table[i].type);
+		free(symbol_table[i].nome_id);
+		free(symbol_table[i].tipo);
 	}
 	printf("\n\n");
 }
 
-int search(char *type) {
+int search(char *tipo) {
 	int i;
 	for(i=count-1; i>=0; i--) {
-		if(strcmp(symbol_table[i].id_name, type)==0) {
+		if(strcmp(symbol_table[i].nome_id, tipo)==0) {
 			return -1;
 			break;
 		}
@@ -143,24 +142,24 @@ void add(char c) {
   q=search(yytext);
   if(!q) {
         if(c == 'V') {
-			symbol_table[count].id_name=strdup(yytext);
-			symbol_table[count].data_type=strdup(type);
-			symbol_table[count].line_no=countn;
-			symbol_table[count].type=strdup("Variavel");
+			symbol_table[count].nome_id=strdup(yytext);
+			symbol_table[count].tipo_dado=strdup(tipo);
+			symbol_table[count].linha=countn;
+			symbol_table[count].tipo=strdup("Variavel");
 			count++;
 		}
 		else if(c == 'C') {
-			symbol_table[count].id_name=strdup(yytext);
-			symbol_table[count].data_type=strdup("INT");
-			symbol_table[count].line_no=countn;
-			symbol_table[count].type=strdup("Constante");
+			symbol_table[count].nome_id=strdup(yytext);
+			symbol_table[count].tipo_dado=strdup("INT");
+			symbol_table[count].linha=countn;
+			symbol_table[count].tipo=strdup("Constante");
 			count++;
 		}
 		else if(c == 'F') {
-			symbol_table[count].id_name=strdup(yytext);
-			symbol_table[count].data_type=strdup(type);
-			symbol_table[count].line_no=countn;
-			symbol_table[count].type=strdup("Funcao");
+			symbol_table[count].nome_id=strdup(yytext);
+			symbol_table[count].tipo_dado=strdup(tipo);
+			symbol_table[count].linha=countn;
+			symbol_table[count].tipo=strdup("Funcao");
 			count++;
 		}
 	}

@@ -1,0 +1,1394 @@
+Terminals unused in grammar
+
+    MAIN
+
+
+Rules useless in parser due to conflicts
+
+    6 $@2: ε
+
+   16 $@4: ε
+
+   50 proposicao: declaracaoVariavel
+
+
+State 5 conflicts: 1 reduce/reduce
+State 17 conflicts: 9 shift/reduce
+State 18 conflicts: 9 shift/reduce
+State 23 conflicts: 13 reduce/reduce
+State 28 conflicts: 9 shift/reduce
+State 30 conflicts: 10 reduce/reduce
+State 37 conflicts: 9 shift/reduce
+State 48 conflicts: 9 shift/reduce, 10 reduce/reduce
+State 80 conflicts: 9 shift/reduce
+State 88 conflicts: 9 shift/reduce
+State 94 conflicts: 10 shift/reduce
+State 96 conflicts: 10 shift/reduce
+
+
+Grammar
+
+    0 $accept: programa $end
+
+    1 programa: lista_funcoes
+
+    2 lista_funcoes: funcao
+    3              | funcao lista_funcoes
+
+    4 $@1: ε
+
+    5 funcao: FN NOME $@1 '(' parametros ')' '{' corpo return '}'
+
+    6 $@2: ε
+
+    7 funcao: FN NOME $@2 '(' ')' '{' corpo return '}'
+
+    8 parametros: NOME
+    9           | parametros ','
+
+   10 corpo: expressoes
+   11      | proposicao
+   12      | corpo corpo
+
+   13 expressoes: declaracaoVariavel
+
+   14 $@3: ε
+
+   15 expressoes: NOME $@3 binarias NOME
+
+   16 $@4: ε
+
+   17 expressoes: NOME $@4 binarias NUMERO
+
+   18 $@5: ε
+
+   19 expressoes: NUMERO $@5 binarias NUMERO
+   20           | unarias NOME
+   21           | unarias NUMERO
+
+   22 $@6: ε
+
+   23 $@7: ε
+
+   24 declaracaoVariavel: VAR NOME $@6 '=' NUMERO $@7 ';'
+
+   25 condicao: valor logicas valor
+
+   26 binarias: LE
+   27         | GE
+   28         | EQ
+   29         | NE
+   30         | GT
+   31         | LT
+   32         | AND
+   33         | OR
+   34         | ADD
+   35         | SUBTRACT
+   36         | MULTIPLY
+   37         | DIVIDE
+   38         | MODULE
+
+   39 unarias: SUBTRACT
+   40        | NOT
+
+   41 logicas: LE
+   42        | GE
+   43        | EQ
+   44        | NE
+   45        | GT
+   46        | LT
+
+   47 return: RETURN valor ';'
+
+   48 valor: NUMERO
+   49      | NOME
+
+   50 proposicao: declaracaoVariavel
+   51           | atribuicao
+   52           | desvioFluxo
+   53           | valor ADDSUB
+   54           | return
+   55           | funcao
+   56           | ε
+
+   57 $@8: ε
+
+   58 desvioFluxo: IF $@8 condicao '{' corpo '}'
+
+   59 $@9: ε
+
+   60 desvioFluxo: WHILE $@9 condicao '{' corpo '}'
+
+   61 atribuicao: NOME '=' NUMERO ';'
+   62           | NOME '=' NOME
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    '(' (40) 5 7
+    ')' (41) 5 7
+    ',' (44) 9
+    ';' (59) 24 47 61
+    '=' (61) 24 61 62
+    '{' (123) 5 7 58 60
+    '}' (125) 5 7 58 60
+    error (256)
+    FN (258) 5 7
+    VAR (259) 24
+    WHILE (260) 60
+    IF (261) 58
+    NUMERO (262) 17 19 21 24 48 61
+    MAIN (263)
+    NOME (264) 5 7 8 15 17 20 24 49 61 62
+    LE (265) 26 41
+    GE (266) 27 42
+    EQ (267) 28 43
+    NE (268) 29 44
+    GT (269) 30 45
+    LT (270) 31 46
+    AND (271) 32
+    OR (272) 33
+    ADD (273) 34
+    MULTIPLY (274) 36
+    DIVIDE (275) 37
+    MODULE (276) 38
+    SUBTRACT (277) 35 39
+    ADDSUB (278) 53
+    NOT (279) 40
+    RETURN (280) 47
+
+
+Nonterminals, with rules where they appear
+
+    $accept (33)
+        on left: 0
+    programa (34)
+        on left: 1
+        on right: 0
+    lista_funcoes (35)
+        on left: 2 3
+        on right: 1 3
+    funcao (36)
+        on left: 5 7
+        on right: 2 3 55
+    $@1 (37)
+        on left: 4
+        on right: 5
+    $@2 (38)
+        on left: 6
+        on right: 7
+    parametros (39)
+        on left: 8 9
+        on right: 5 9
+    corpo (40)
+        on left: 10 11 12
+        on right: 5 7 12 58 60
+    expressoes (41)
+        on left: 13 15 17 19 20 21
+        on right: 10
+    $@3 (42)
+        on left: 14
+        on right: 15
+    $@4 (43)
+        on left: 16
+        on right: 17
+    $@5 (44)
+        on left: 18
+        on right: 19
+    declaracaoVariavel (45)
+        on left: 24
+        on right: 13 50
+    $@6 (46)
+        on left: 22
+        on right: 24
+    $@7 (47)
+        on left: 23
+        on right: 24
+    condicao (48)
+        on left: 25
+        on right: 58 60
+    binarias (49)
+        on left: 26 27 28 29 30 31 32 33 34 35 36 37 38
+        on right: 15 17 19
+    unarias (50)
+        on left: 39 40
+        on right: 20 21
+    logicas (51)
+        on left: 41 42 43 44 45 46
+        on right: 25
+    return (52)
+        on left: 47
+        on right: 5 7 54
+    valor (53)
+        on left: 48 49
+        on right: 25 47 53
+    proposicao (54)
+        on left: 50 51 52 53 54 55 56
+        on right: 11
+    desvioFluxo (55)
+        on left: 58 60
+        on right: 52
+    $@8 (56)
+        on left: 57
+        on right: 58
+    $@9 (57)
+        on left: 59
+        on right: 60
+    atribuicao (58)
+        on left: 61 62
+        on right: 51
+
+
+State 0
+
+    0 $accept: • programa $end
+
+    FN  shift, and go to state 1
+
+    programa       go to state 2
+    lista_funcoes  go to state 3
+    funcao         go to state 4
+
+
+State 1
+
+    5 funcao: FN • NOME $@1 '(' parametros ')' '{' corpo return '}'
+    7       | FN • NOME $@2 '(' ')' '{' corpo return '}'
+
+    NOME  shift, and go to state 5
+
+
+State 2
+
+    0 $accept: programa • $end
+
+    $end  shift, and go to state 6
+
+
+State 3
+
+    1 programa: lista_funcoes •
+
+    $default  reduce using rule 1 (programa)
+
+
+State 4
+
+    2 lista_funcoes: funcao •
+    3              | funcao • lista_funcoes
+
+    FN  shift, and go to state 1
+
+    $default  reduce using rule 2 (lista_funcoes)
+
+    lista_funcoes  go to state 7
+    funcao         go to state 4
+
+
+State 5
+
+    5 funcao: FN NOME • $@1 '(' parametros ')' '{' corpo return '}'
+    7       | FN NOME • $@2 '(' ')' '{' corpo return '}'
+
+    '('       reduce using rule 4 ($@1)
+    '('       [reduce using rule 6 ($@2)]
+    $default  reduce using rule 4 ($@1)
+
+    $@1  go to state 8
+    $@2  go to state 9
+
+
+State 6
+
+    0 $accept: programa $end •
+
+    $default  accept
+
+
+State 7
+
+    3 lista_funcoes: funcao lista_funcoes •
+
+    $default  reduce using rule 3 (lista_funcoes)
+
+
+State 8
+
+    5 funcao: FN NOME $@1 • '(' parametros ')' '{' corpo return '}'
+
+    '('  shift, and go to state 10
+
+
+State 9
+
+    7 funcao: FN NOME $@2 • '(' ')' '{' corpo return '}'
+
+    '('  shift, and go to state 11
+
+
+State 10
+
+    5 funcao: FN NOME $@1 '(' • parametros ')' '{' corpo return '}'
+
+    NOME  shift, and go to state 12
+
+    parametros  go to state 13
+
+
+State 11
+
+    7 funcao: FN NOME $@2 '(' • ')' '{' corpo return '}'
+
+    ')'  shift, and go to state 14
+
+
+State 12
+
+    8 parametros: NOME •
+
+    $default  reduce using rule 8 (parametros)
+
+
+State 13
+
+    5 funcao: FN NOME $@1 '(' parametros • ')' '{' corpo return '}'
+    9 parametros: parametros • ','
+
+    ')'  shift, and go to state 15
+    ','  shift, and go to state 16
+
+
+State 14
+
+    7 funcao: FN NOME $@2 '(' ')' • '{' corpo return '}'
+
+    '{'  shift, and go to state 17
+
+
+State 15
+
+    5 funcao: FN NOME $@1 '(' parametros ')' • '{' corpo return '}'
+
+    '{'  shift, and go to state 18
+
+
+State 16
+
+    9 parametros: parametros ',' •
+
+    $default  reduce using rule 9 (parametros)
+
+
+State 17
+
+    7 funcao: FN NOME $@2 '(' ')' '{' • corpo return '}'
+
+    FN        shift, and go to state 1
+    VAR       shift, and go to state 19
+    WHILE     shift, and go to state 20
+    IF        shift, and go to state 21
+    NUMERO    shift, and go to state 22
+    NOME      shift, and go to state 23
+    SUBTRACT  shift, and go to state 24
+    NOT       shift, and go to state 25
+    RETURN    shift, and go to state 26
+
+    FN        [reduce using rule 56 (proposicao)]
+    VAR       [reduce using rule 56 (proposicao)]
+    WHILE     [reduce using rule 56 (proposicao)]
+    IF        [reduce using rule 56 (proposicao)]
+    NUMERO    [reduce using rule 56 (proposicao)]
+    NOME      [reduce using rule 56 (proposicao)]
+    SUBTRACT  [reduce using rule 56 (proposicao)]
+    NOT       [reduce using rule 56 (proposicao)]
+    RETURN    [reduce using rule 56 (proposicao)]
+
+    funcao              go to state 27
+    corpo               go to state 28
+    expressoes          go to state 29
+    declaracaoVariavel  go to state 30
+    unarias             go to state 31
+    return              go to state 32
+    valor               go to state 33
+    proposicao          go to state 34
+    desvioFluxo         go to state 35
+    atribuicao          go to state 36
+
+
+State 18
+
+    5 funcao: FN NOME $@1 '(' parametros ')' '{' • corpo return '}'
+
+    FN        shift, and go to state 1
+    VAR       shift, and go to state 19
+    WHILE     shift, and go to state 20
+    IF        shift, and go to state 21
+    NUMERO    shift, and go to state 22
+    NOME      shift, and go to state 23
+    SUBTRACT  shift, and go to state 24
+    NOT       shift, and go to state 25
+    RETURN    shift, and go to state 26
+
+    FN        [reduce using rule 56 (proposicao)]
+    VAR       [reduce using rule 56 (proposicao)]
+    WHILE     [reduce using rule 56 (proposicao)]
+    IF        [reduce using rule 56 (proposicao)]
+    NUMERO    [reduce using rule 56 (proposicao)]
+    NOME      [reduce using rule 56 (proposicao)]
+    SUBTRACT  [reduce using rule 56 (proposicao)]
+    NOT       [reduce using rule 56 (proposicao)]
+    RETURN    [reduce using rule 56 (proposicao)]
+
+    funcao              go to state 27
+    corpo               go to state 37
+    expressoes          go to state 29
+    declaracaoVariavel  go to state 30
+    unarias             go to state 31
+    return              go to state 32
+    valor               go to state 33
+    proposicao          go to state 34
+    desvioFluxo         go to state 35
+    atribuicao          go to state 36
+
+
+State 19
+
+   24 declaracaoVariavel: VAR • NOME $@6 '=' NUMERO $@7 ';'
+
+    NOME  shift, and go to state 38
+
+
+State 20
+
+   60 desvioFluxo: WHILE • $@9 condicao '{' corpo '}'
+
+    $default  reduce using rule 59 ($@9)
+
+    $@9  go to state 39
+
+
+State 21
+
+   58 desvioFluxo: IF • $@8 condicao '{' corpo '}'
+
+    $default  reduce using rule 57 ($@8)
+
+    $@8  go to state 40
+
+
+State 22
+
+   19 expressoes: NUMERO • $@5 binarias NUMERO
+   48 valor: NUMERO •
+
+    ADDSUB    reduce using rule 48 (valor)
+    $default  reduce using rule 18 ($@5)
+
+    $@5  go to state 41
+
+
+State 23
+
+   15 expressoes: NOME • $@3 binarias NOME
+   17           | NOME • $@4 binarias NUMERO
+   49 valor: NOME •
+   61 atribuicao: NOME • '=' NUMERO ';'
+   62           | NOME • '=' NOME
+
+    '='  shift, and go to state 42
+
+    LE        reduce using rule 14 ($@3)
+    LE        [reduce using rule 16 ($@4)]
+    GE        reduce using rule 14 ($@3)
+    GE        [reduce using rule 16 ($@4)]
+    EQ        reduce using rule 14 ($@3)
+    EQ        [reduce using rule 16 ($@4)]
+    NE        reduce using rule 14 ($@3)
+    NE        [reduce using rule 16 ($@4)]
+    GT        reduce using rule 14 ($@3)
+    GT        [reduce using rule 16 ($@4)]
+    LT        reduce using rule 14 ($@3)
+    LT        [reduce using rule 16 ($@4)]
+    AND       reduce using rule 14 ($@3)
+    AND       [reduce using rule 16 ($@4)]
+    OR        reduce using rule 14 ($@3)
+    OR        [reduce using rule 16 ($@4)]
+    ADD       reduce using rule 14 ($@3)
+    ADD       [reduce using rule 16 ($@4)]
+    MULTIPLY  reduce using rule 14 ($@3)
+    MULTIPLY  [reduce using rule 16 ($@4)]
+    DIVIDE    reduce using rule 14 ($@3)
+    DIVIDE    [reduce using rule 16 ($@4)]
+    MODULE    reduce using rule 14 ($@3)
+    MODULE    [reduce using rule 16 ($@4)]
+    SUBTRACT  reduce using rule 14 ($@3)
+    SUBTRACT  [reduce using rule 16 ($@4)]
+    ADDSUB    reduce using rule 49 (valor)
+    $default  reduce using rule 14 ($@3)
+
+    $@3  go to state 43
+    $@4  go to state 44
+
+
+State 24
+
+   39 unarias: SUBTRACT •
+
+    $default  reduce using rule 39 (unarias)
+
+
+State 25
+
+   40 unarias: NOT •
+
+    $default  reduce using rule 40 (unarias)
+
+
+State 26
+
+   47 return: RETURN • valor ';'
+
+    NUMERO  shift, and go to state 45
+    NOME    shift, and go to state 46
+
+    valor  go to state 47
+
+
+State 27
+
+   55 proposicao: funcao •
+
+    $default  reduce using rule 55 (proposicao)
+
+
+State 28
+
+    7 funcao: FN NOME $@2 '(' ')' '{' corpo • return '}'
+   12 corpo: corpo • corpo
+
+    FN        shift, and go to state 1
+    VAR       shift, and go to state 19
+    WHILE     shift, and go to state 20
+    IF        shift, and go to state 21
+    NUMERO    shift, and go to state 22
+    NOME      shift, and go to state 23
+    SUBTRACT  shift, and go to state 24
+    NOT       shift, and go to state 25
+    RETURN    shift, and go to state 26
+
+    FN        [reduce using rule 56 (proposicao)]
+    VAR       [reduce using rule 56 (proposicao)]
+    WHILE     [reduce using rule 56 (proposicao)]
+    IF        [reduce using rule 56 (proposicao)]
+    NUMERO    [reduce using rule 56 (proposicao)]
+    NOME      [reduce using rule 56 (proposicao)]
+    SUBTRACT  [reduce using rule 56 (proposicao)]
+    NOT       [reduce using rule 56 (proposicao)]
+    RETURN    [reduce using rule 56 (proposicao)]
+
+    funcao              go to state 27
+    corpo               go to state 48
+    expressoes          go to state 29
+    declaracaoVariavel  go to state 30
+    unarias             go to state 31
+    return              go to state 49
+    valor               go to state 33
+    proposicao          go to state 34
+    desvioFluxo         go to state 35
+    atribuicao          go to state 36
+
+
+State 29
+
+   10 corpo: expressoes •
+
+    $default  reduce using rule 10 (corpo)
+
+
+State 30
+
+   13 expressoes: declaracaoVariavel •
+   50 proposicao: declaracaoVariavel •
+
+    FN        reduce using rule 13 (expressoes)
+    FN        [reduce using rule 50 (proposicao)]
+    VAR       reduce using rule 13 (expressoes)
+    VAR       [reduce using rule 50 (proposicao)]
+    WHILE     reduce using rule 13 (expressoes)
+    WHILE     [reduce using rule 50 (proposicao)]
+    IF        reduce using rule 13 (expressoes)
+    IF        [reduce using rule 50 (proposicao)]
+    NUMERO    reduce using rule 13 (expressoes)
+    NUMERO    [reduce using rule 50 (proposicao)]
+    NOME      reduce using rule 13 (expressoes)
+    NOME      [reduce using rule 50 (proposicao)]
+    SUBTRACT  reduce using rule 13 (expressoes)
+    SUBTRACT  [reduce using rule 50 (proposicao)]
+    NOT       reduce using rule 13 (expressoes)
+    NOT       [reduce using rule 50 (proposicao)]
+    RETURN    reduce using rule 13 (expressoes)
+    RETURN    [reduce using rule 50 (proposicao)]
+    '}'       reduce using rule 13 (expressoes)
+    '}'       [reduce using rule 50 (proposicao)]
+    $default  reduce using rule 13 (expressoes)
+
+
+State 31
+
+   20 expressoes: unarias • NOME
+   21           | unarias • NUMERO
+
+    NUMERO  shift, and go to state 50
+    NOME    shift, and go to state 51
+
+
+State 32
+
+   54 proposicao: return •
+
+    $default  reduce using rule 54 (proposicao)
+
+
+State 33
+
+   53 proposicao: valor • ADDSUB
+
+    ADDSUB  shift, and go to state 52
+
+
+State 34
+
+   11 corpo: proposicao •
+
+    $default  reduce using rule 11 (corpo)
+
+
+State 35
+
+   52 proposicao: desvioFluxo •
+
+    $default  reduce using rule 52 (proposicao)
+
+
+State 36
+
+   51 proposicao: atribuicao •
+
+    $default  reduce using rule 51 (proposicao)
+
+
+State 37
+
+    5 funcao: FN NOME $@1 '(' parametros ')' '{' corpo • return '}'
+   12 corpo: corpo • corpo
+
+    FN        shift, and go to state 1
+    VAR       shift, and go to state 19
+    WHILE     shift, and go to state 20
+    IF        shift, and go to state 21
+    NUMERO    shift, and go to state 22
+    NOME      shift, and go to state 23
+    SUBTRACT  shift, and go to state 24
+    NOT       shift, and go to state 25
+    RETURN    shift, and go to state 26
+
+    FN        [reduce using rule 56 (proposicao)]
+    VAR       [reduce using rule 56 (proposicao)]
+    WHILE     [reduce using rule 56 (proposicao)]
+    IF        [reduce using rule 56 (proposicao)]
+    NUMERO    [reduce using rule 56 (proposicao)]
+    NOME      [reduce using rule 56 (proposicao)]
+    SUBTRACT  [reduce using rule 56 (proposicao)]
+    NOT       [reduce using rule 56 (proposicao)]
+    RETURN    [reduce using rule 56 (proposicao)]
+
+    funcao              go to state 27
+    corpo               go to state 48
+    expressoes          go to state 29
+    declaracaoVariavel  go to state 30
+    unarias             go to state 31
+    return              go to state 53
+    valor               go to state 33
+    proposicao          go to state 34
+    desvioFluxo         go to state 35
+    atribuicao          go to state 36
+
+
+State 38
+
+   24 declaracaoVariavel: VAR NOME • $@6 '=' NUMERO $@7 ';'
+
+    $default  reduce using rule 22 ($@6)
+
+    $@6  go to state 54
+
+
+State 39
+
+   60 desvioFluxo: WHILE $@9 • condicao '{' corpo '}'
+
+    NUMERO  shift, and go to state 45
+    NOME    shift, and go to state 46
+
+    condicao  go to state 55
+    valor     go to state 56
+
+
+State 40
+
+   58 desvioFluxo: IF $@8 • condicao '{' corpo '}'
+
+    NUMERO  shift, and go to state 45
+    NOME    shift, and go to state 46
+
+    condicao  go to state 57
+    valor     go to state 56
+
+
+State 41
+
+   19 expressoes: NUMERO $@5 • binarias NUMERO
+
+    LE        shift, and go to state 58
+    GE        shift, and go to state 59
+    EQ        shift, and go to state 60
+    NE        shift, and go to state 61
+    GT        shift, and go to state 62
+    LT        shift, and go to state 63
+    AND       shift, and go to state 64
+    OR        shift, and go to state 65
+    ADD       shift, and go to state 66
+    MULTIPLY  shift, and go to state 67
+    DIVIDE    shift, and go to state 68
+    MODULE    shift, and go to state 69
+    SUBTRACT  shift, and go to state 70
+
+    binarias  go to state 71
+
+
+State 42
+
+   61 atribuicao: NOME '=' • NUMERO ';'
+   62           | NOME '=' • NOME
+
+    NUMERO  shift, and go to state 72
+    NOME    shift, and go to state 73
+
+
+State 43
+
+   15 expressoes: NOME $@3 • binarias NOME
+
+    LE        shift, and go to state 58
+    GE        shift, and go to state 59
+    EQ        shift, and go to state 60
+    NE        shift, and go to state 61
+    GT        shift, and go to state 62
+    LT        shift, and go to state 63
+    AND       shift, and go to state 64
+    OR        shift, and go to state 65
+    ADD       shift, and go to state 66
+    MULTIPLY  shift, and go to state 67
+    DIVIDE    shift, and go to state 68
+    MODULE    shift, and go to state 69
+    SUBTRACT  shift, and go to state 70
+
+    binarias  go to state 74
+
+
+State 44
+
+   17 expressoes: NOME $@4 • binarias NUMERO
+
+    LE        shift, and go to state 58
+    GE        shift, and go to state 59
+    EQ        shift, and go to state 60
+    NE        shift, and go to state 61
+    GT        shift, and go to state 62
+    LT        shift, and go to state 63
+    AND       shift, and go to state 64
+    OR        shift, and go to state 65
+    ADD       shift, and go to state 66
+    MULTIPLY  shift, and go to state 67
+    DIVIDE    shift, and go to state 68
+    MODULE    shift, and go to state 69
+    SUBTRACT  shift, and go to state 70
+
+    binarias  go to state 75
+
+
+State 45
+
+   48 valor: NUMERO •
+
+    $default  reduce using rule 48 (valor)
+
+
+State 46
+
+   49 valor: NOME •
+
+    $default  reduce using rule 49 (valor)
+
+
+State 47
+
+   47 return: RETURN valor • ';'
+
+    ';'  shift, and go to state 76
+
+
+State 48
+
+   12 corpo: corpo • corpo
+   12      | corpo corpo •
+
+    FN        shift, and go to state 1
+    VAR       shift, and go to state 19
+    WHILE     shift, and go to state 20
+    IF        shift, and go to state 21
+    NUMERO    shift, and go to state 22
+    NOME      shift, and go to state 23
+    SUBTRACT  shift, and go to state 24
+    NOT       shift, and go to state 25
+    RETURN    shift, and go to state 26
+
+    FN        [reduce using rule 12 (corpo)]
+    FN        [reduce using rule 56 (proposicao)]
+    VAR       [reduce using rule 12 (corpo)]
+    VAR       [reduce using rule 56 (proposicao)]
+    WHILE     [reduce using rule 12 (corpo)]
+    WHILE     [reduce using rule 56 (proposicao)]
+    IF        [reduce using rule 12 (corpo)]
+    IF        [reduce using rule 56 (proposicao)]
+    NUMERO    [reduce using rule 12 (corpo)]
+    NUMERO    [reduce using rule 56 (proposicao)]
+    NOME      [reduce using rule 12 (corpo)]
+    NOME      [reduce using rule 56 (proposicao)]
+    SUBTRACT  [reduce using rule 12 (corpo)]
+    SUBTRACT  [reduce using rule 56 (proposicao)]
+    NOT       [reduce using rule 12 (corpo)]
+    NOT       [reduce using rule 56 (proposicao)]
+    RETURN    [reduce using rule 12 (corpo)]
+    RETURN    [reduce using rule 56 (proposicao)]
+    '}'       reduce using rule 12 (corpo)
+    '}'       [reduce using rule 56 (proposicao)]
+    $default  reduce using rule 12 (corpo)
+
+    funcao              go to state 27
+    corpo               go to state 48
+    expressoes          go to state 29
+    declaracaoVariavel  go to state 30
+    unarias             go to state 31
+    return              go to state 32
+    valor               go to state 33
+    proposicao          go to state 34
+    desvioFluxo         go to state 35
+    atribuicao          go to state 36
+
+
+State 49
+
+    7 funcao: FN NOME $@2 '(' ')' '{' corpo return • '}'
+   54 proposicao: return •
+
+    '}'  shift, and go to state 77
+
+    $default  reduce using rule 54 (proposicao)
+
+
+State 50
+
+   21 expressoes: unarias NUMERO •
+
+    $default  reduce using rule 21 (expressoes)
+
+
+State 51
+
+   20 expressoes: unarias NOME •
+
+    $default  reduce using rule 20 (expressoes)
+
+
+State 52
+
+   53 proposicao: valor ADDSUB •
+
+    $default  reduce using rule 53 (proposicao)
+
+
+State 53
+
+    5 funcao: FN NOME $@1 '(' parametros ')' '{' corpo return • '}'
+   54 proposicao: return •
+
+    '}'  shift, and go to state 78
+
+    $default  reduce using rule 54 (proposicao)
+
+
+State 54
+
+   24 declaracaoVariavel: VAR NOME $@6 • '=' NUMERO $@7 ';'
+
+    '='  shift, and go to state 79
+
+
+State 55
+
+   60 desvioFluxo: WHILE $@9 condicao • '{' corpo '}'
+
+    '{'  shift, and go to state 80
+
+
+State 56
+
+   25 condicao: valor • logicas valor
+
+    LE  shift, and go to state 81
+    GE  shift, and go to state 82
+    EQ  shift, and go to state 83
+    NE  shift, and go to state 84
+    GT  shift, and go to state 85
+    LT  shift, and go to state 86
+
+    logicas  go to state 87
+
+
+State 57
+
+   58 desvioFluxo: IF $@8 condicao • '{' corpo '}'
+
+    '{'  shift, and go to state 88
+
+
+State 58
+
+   26 binarias: LE •
+
+    $default  reduce using rule 26 (binarias)
+
+
+State 59
+
+   27 binarias: GE •
+
+    $default  reduce using rule 27 (binarias)
+
+
+State 60
+
+   28 binarias: EQ •
+
+    $default  reduce using rule 28 (binarias)
+
+
+State 61
+
+   29 binarias: NE •
+
+    $default  reduce using rule 29 (binarias)
+
+
+State 62
+
+   30 binarias: GT •
+
+    $default  reduce using rule 30 (binarias)
+
+
+State 63
+
+   31 binarias: LT •
+
+    $default  reduce using rule 31 (binarias)
+
+
+State 64
+
+   32 binarias: AND •
+
+    $default  reduce using rule 32 (binarias)
+
+
+State 65
+
+   33 binarias: OR •
+
+    $default  reduce using rule 33 (binarias)
+
+
+State 66
+
+   34 binarias: ADD •
+
+    $default  reduce using rule 34 (binarias)
+
+
+State 67
+
+   36 binarias: MULTIPLY •
+
+    $default  reduce using rule 36 (binarias)
+
+
+State 68
+
+   37 binarias: DIVIDE •
+
+    $default  reduce using rule 37 (binarias)
+
+
+State 69
+
+   38 binarias: MODULE •
+
+    $default  reduce using rule 38 (binarias)
+
+
+State 70
+
+   35 binarias: SUBTRACT •
+
+    $default  reduce using rule 35 (binarias)
+
+
+State 71
+
+   19 expressoes: NUMERO $@5 binarias • NUMERO
+
+    NUMERO  shift, and go to state 89
+
+
+State 72
+
+   61 atribuicao: NOME '=' NUMERO • ';'
+
+    ';'  shift, and go to state 90
+
+
+State 73
+
+   62 atribuicao: NOME '=' NOME •
+
+    $default  reduce using rule 62 (atribuicao)
+
+
+State 74
+
+   15 expressoes: NOME $@3 binarias • NOME
+
+    NOME  shift, and go to state 91
+
+
+State 75
+
+   17 expressoes: NOME $@4 binarias • NUMERO
+
+    NUMERO  shift, and go to state 92
+
+
+State 76
+
+   47 return: RETURN valor ';' •
+
+    $default  reduce using rule 47 (return)
+
+
+State 77
+
+    7 funcao: FN NOME $@2 '(' ')' '{' corpo return '}' •
+
+    $default  reduce using rule 7 (funcao)
+
+
+State 78
+
+    5 funcao: FN NOME $@1 '(' parametros ')' '{' corpo return '}' •
+
+    $default  reduce using rule 5 (funcao)
+
+
+State 79
+
+   24 declaracaoVariavel: VAR NOME $@6 '=' • NUMERO $@7 ';'
+
+    NUMERO  shift, and go to state 93
+
+
+State 80
+
+   60 desvioFluxo: WHILE $@9 condicao '{' • corpo '}'
+
+    FN        shift, and go to state 1
+    VAR       shift, and go to state 19
+    WHILE     shift, and go to state 20
+    IF        shift, and go to state 21
+    NUMERO    shift, and go to state 22
+    NOME      shift, and go to state 23
+    SUBTRACT  shift, and go to state 24
+    NOT       shift, and go to state 25
+    RETURN    shift, and go to state 26
+
+    FN        [reduce using rule 56 (proposicao)]
+    VAR       [reduce using rule 56 (proposicao)]
+    WHILE     [reduce using rule 56 (proposicao)]
+    IF        [reduce using rule 56 (proposicao)]
+    NUMERO    [reduce using rule 56 (proposicao)]
+    NOME      [reduce using rule 56 (proposicao)]
+    SUBTRACT  [reduce using rule 56 (proposicao)]
+    NOT       [reduce using rule 56 (proposicao)]
+    RETURN    [reduce using rule 56 (proposicao)]
+    $default  reduce using rule 56 (proposicao)
+
+    funcao              go to state 27
+    corpo               go to state 94
+    expressoes          go to state 29
+    declaracaoVariavel  go to state 30
+    unarias             go to state 31
+    return              go to state 32
+    valor               go to state 33
+    proposicao          go to state 34
+    desvioFluxo         go to state 35
+    atribuicao          go to state 36
+
+
+State 81
+
+   41 logicas: LE •
+
+    $default  reduce using rule 41 (logicas)
+
+
+State 82
+
+   42 logicas: GE •
+
+    $default  reduce using rule 42 (logicas)
+
+
+State 83
+
+   43 logicas: EQ •
+
+    $default  reduce using rule 43 (logicas)
+
+
+State 84
+
+   44 logicas: NE •
+
+    $default  reduce using rule 44 (logicas)
+
+
+State 85
+
+   45 logicas: GT •
+
+    $default  reduce using rule 45 (logicas)
+
+
+State 86
+
+   46 logicas: LT •
+
+    $default  reduce using rule 46 (logicas)
+
+
+State 87
+
+   25 condicao: valor logicas • valor
+
+    NUMERO  shift, and go to state 45
+    NOME    shift, and go to state 46
+
+    valor  go to state 95
+
+
+State 88
+
+   58 desvioFluxo: IF $@8 condicao '{' • corpo '}'
+
+    FN        shift, and go to state 1
+    VAR       shift, and go to state 19
+    WHILE     shift, and go to state 20
+    IF        shift, and go to state 21
+    NUMERO    shift, and go to state 22
+    NOME      shift, and go to state 23
+    SUBTRACT  shift, and go to state 24
+    NOT       shift, and go to state 25
+    RETURN    shift, and go to state 26
+
+    FN        [reduce using rule 56 (proposicao)]
+    VAR       [reduce using rule 56 (proposicao)]
+    WHILE     [reduce using rule 56 (proposicao)]
+    IF        [reduce using rule 56 (proposicao)]
+    NUMERO    [reduce using rule 56 (proposicao)]
+    NOME      [reduce using rule 56 (proposicao)]
+    SUBTRACT  [reduce using rule 56 (proposicao)]
+    NOT       [reduce using rule 56 (proposicao)]
+    RETURN    [reduce using rule 56 (proposicao)]
+    $default  reduce using rule 56 (proposicao)
+
+    funcao              go to state 27
+    corpo               go to state 96
+    expressoes          go to state 29
+    declaracaoVariavel  go to state 30
+    unarias             go to state 31
+    return              go to state 32
+    valor               go to state 33
+    proposicao          go to state 34
+    desvioFluxo         go to state 35
+    atribuicao          go to state 36
+
+
+State 89
+
+   19 expressoes: NUMERO $@5 binarias NUMERO •
+
+    $default  reduce using rule 19 (expressoes)
+
+
+State 90
+
+   61 atribuicao: NOME '=' NUMERO ';' •
+
+    $default  reduce using rule 61 (atribuicao)
+
+
+State 91
+
+   15 expressoes: NOME $@3 binarias NOME •
+
+    $default  reduce using rule 15 (expressoes)
+
+
+State 92
+
+   17 expressoes: NOME $@4 binarias NUMERO •
+
+    $default  reduce using rule 17 (expressoes)
+
+
+State 93
+
+   24 declaracaoVariavel: VAR NOME $@6 '=' NUMERO • $@7 ';'
+
+    $default  reduce using rule 23 ($@7)
+
+    $@7  go to state 97
+
+
+State 94
+
+   12 corpo: corpo • corpo
+   60 desvioFluxo: WHILE $@9 condicao '{' corpo • '}'
+
+    FN        shift, and go to state 1
+    VAR       shift, and go to state 19
+    WHILE     shift, and go to state 20
+    IF        shift, and go to state 21
+    NUMERO    shift, and go to state 22
+    NOME      shift, and go to state 23
+    SUBTRACT  shift, and go to state 24
+    NOT       shift, and go to state 25
+    RETURN    shift, and go to state 26
+    '}'       shift, and go to state 98
+
+    FN        [reduce using rule 56 (proposicao)]
+    VAR       [reduce using rule 56 (proposicao)]
+    WHILE     [reduce using rule 56 (proposicao)]
+    IF        [reduce using rule 56 (proposicao)]
+    NUMERO    [reduce using rule 56 (proposicao)]
+    NOME      [reduce using rule 56 (proposicao)]
+    SUBTRACT  [reduce using rule 56 (proposicao)]
+    NOT       [reduce using rule 56 (proposicao)]
+    RETURN    [reduce using rule 56 (proposicao)]
+    '}'       [reduce using rule 56 (proposicao)]
+
+    funcao              go to state 27
+    corpo               go to state 48
+    expressoes          go to state 29
+    declaracaoVariavel  go to state 30
+    unarias             go to state 31
+    return              go to state 32
+    valor               go to state 33
+    proposicao          go to state 34
+    desvioFluxo         go to state 35
+    atribuicao          go to state 36
+
+
+State 95
+
+   25 condicao: valor logicas valor •
+
+    $default  reduce using rule 25 (condicao)
+
+
+State 96
+
+   12 corpo: corpo • corpo
+   58 desvioFluxo: IF $@8 condicao '{' corpo • '}'
+
+    FN        shift, and go to state 1
+    VAR       shift, and go to state 19
+    WHILE     shift, and go to state 20
+    IF        shift, and go to state 21
+    NUMERO    shift, and go to state 22
+    NOME      shift, and go to state 23
+    SUBTRACT  shift, and go to state 24
+    NOT       shift, and go to state 25
+    RETURN    shift, and go to state 26
+    '}'       shift, and go to state 99
+
+    FN        [reduce using rule 56 (proposicao)]
+    VAR       [reduce using rule 56 (proposicao)]
+    WHILE     [reduce using rule 56 (proposicao)]
+    IF        [reduce using rule 56 (proposicao)]
+    NUMERO    [reduce using rule 56 (proposicao)]
+    NOME      [reduce using rule 56 (proposicao)]
+    SUBTRACT  [reduce using rule 56 (proposicao)]
+    NOT       [reduce using rule 56 (proposicao)]
+    RETURN    [reduce using rule 56 (proposicao)]
+    '}'       [reduce using rule 56 (proposicao)]
+
+    funcao              go to state 27
+    corpo               go to state 48
+    expressoes          go to state 29
+    declaracaoVariavel  go to state 30
+    unarias             go to state 31
+    return              go to state 32
+    valor               go to state 33
+    proposicao          go to state 34
+    desvioFluxo         go to state 35
+    atribuicao          go to state 36
+
+
+State 97
+
+   24 declaracaoVariavel: VAR NOME $@6 '=' NUMERO $@7 • ';'
+
+    ';'  shift, and go to state 100
+
+
+State 98
+
+   60 desvioFluxo: WHILE $@9 condicao '{' corpo '}' •
+
+    $default  reduce using rule 60 (desvioFluxo)
+
+
+State 99
+
+   58 desvioFluxo: IF $@8 condicao '{' corpo '}' •
+
+    $default  reduce using rule 58 (desvioFluxo)
+
+
+State 100
+
+   24 declaracaoVariavel: VAR NOME $@6 '=' NUMERO $@7 ';' •
+
+    $default  reduce using rule 24 (declaracaoVariavel)
