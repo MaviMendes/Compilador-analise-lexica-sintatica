@@ -31,40 +31,83 @@
 %%
 
 
-
 programa: lista_funcoes
 ;
+
 
 lista_funcoes: funcao 
 | funcao lista_funcoes
 ;
 
-funcao: FN  NOME { add('F'); } '(' parametros ')' '{' corpo return'}'
-| FN  NOME { add('F'); } '(' ')' '{' corpo return'}'
+funcao: chamada_funcao   lista_parametros  lista_corpo RETURN
+| chamada_funcao  lista_corpo RETURN 
 ;
 
-parametros: NOME { add('V'); }
-| parametros ','
+lista_parametros: parametro
+| parametro lista_parametros
+;
+
+parametro: variavel
+;
+
+variavel: NOME;
+
+valor: NUMERO;
+
+/*
+operacoes 
+	not 
+	subtract 
+
+desvio de fluxo 
+	while 
+	if
+
+
+
+    FN        [reduce using rule 11 (lista_corpo)]
+    VAR       [reduce using rule 11 (lista_corpo)]
+  
+    NUMERO    [reduce using rule 11 (lista_corpo)]
+    NOME      [reduce using rule 11 (lista_corpo)]
+ 
+    RETURN    [reduce using rule 11 (lista_corpo)]
+
+*/
+
+lista_corpo: corpo 
+| corpo lista_corpo 
 ;
 
 corpo: expressoes
 |proposicao
-|corpo corpo
 ;
 
-expressoes: declaracaoVariavel
-| NOME { add('V'); } binarias NOME { add('V'); }
-| NOME { add('V'); } binarias NUMERO { add('C'); }
-| NUMERO { add('C'); } binarias NUMERO { add('C'); }
-| unarias NOME { add('V'); }
-| unarias NUMERO { add('C'); }
+expressoes:variavel  binarias valor  // ok state 12 
+| variavel binarias variavel
+| unarias variavel 
+| unarias valor
+
+
+
+proposicao: declaracaoVariavel
+| atribuicao
+| desvioFluxo
+| valor ADDSUB
+| variavel ADDSUB
+| RETURN 
+| chamada_funcao
 ;
 
-
-declaracaoVariavel: VAR NOME { add('V'); } '=' NUMERO { add('C'); } ';'
+chamada_funcao: FN '(' lista_parametros ')'
 ;
 
-condicao: valor logicas valor
+declaracaoVariavel: VAR '=' valor
+;
+
+condicao: variavel logicas variavel
+| variavel logicas valor 
+| valor logicas variavel
 ;
 
 binarias: LE | GE | EQ | NE | GT | LT | AND | OR  | ADD | SUBTRACT | MULTIPLY | DIVIDE | MODULE
@@ -76,35 +119,13 @@ unarias: SUBTRACT | NOT
 logicas: LE | GE | EQ | NE | GT | LT
 ;
 
-return: RETURN valor ';'
+
+
+desvioFluxo: IF   condicao  lista_corpo 
+| WHILE condicao  lista_corpo 
 ;
 
-valor: NUMERO { add('C'); }
-| NOME { add('V'); }
-;
-
-
-proposicao: declaracaoVariavel
-| atribuicao
-| desvioFluxo
-| valor ADDSUB
-| return 
-| funcao
-|
-;
-
-desvioFluxo: IF  { add('K'); } condicao '{' corpo '}'
-| WHILE { add('K');} condicao '{' corpo '}'
-;
-
-
-// identificadores: Um identificador (nome) é uma letra, opcionalmente seguida por letras e underscores “_”.
-
-/*declaracoes: VAR atribuicao ';'
-| VAR atribuicao declaracoes // "recursividade" tipo  var i=1; t=4;
-; ja tem declaracaoVariavel*/
-
-atribuicao: NOME '=' NUMERO ';'
+atribuicao: NOME '=' NUMERO 
 | NOME '=' NOME
 ;
 
