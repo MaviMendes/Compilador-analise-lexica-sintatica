@@ -5,12 +5,13 @@ Terminals unused in grammar
 
 Rules useless in parser due to conflicts
 
-   11 lista_corpo: corpo
+   12 lista_corpo: corpo
 
 
-State 18 conflicts: 1 shift/reduce
+State 4 conflicts: 1 shift/reduce
 State 19 conflicts: 1 shift/reduce
-State 22 conflicts: 9 shift/reduce
+State 20 conflicts: 1 shift/reduce
+State 23 conflicts: 9 shift/reduce
 
 
 Grammar
@@ -18,110 +19,120 @@ Grammar
     0 $accept: programa $end
 
     1 programa: lista_funcoes
+    2         | lista_funcoes programa
 
-    2 lista_funcoes: funcao
-    3              | funcao lista_funcoes
+    3 lista_funcoes: funcao
+    4              | funcao lista_funcoes
 
-    4 funcao: chamada_funcao lista_parametros lista_corpo RETURN
-    5       | chamada_funcao lista_corpo RETURN
+    5 funcao: chamada_funcao lista_parametros lista_corpo RETURN
+    6       | chamada_funcao lista_corpo RETURN
 
-    6 lista_parametros: parametro
-    7                 | parametro lista_parametros
+    7 lista_parametros: parametro
+    8                 | parametro lista_parametros
 
-    8 parametro: variavel
+    9 parametro: variavel
 
-    9 variavel: NOME
+   10 variavel: NOME
 
-   10 valor: NUMERO
+   11 valor: NUMERO
 
-   11 lista_corpo: corpo
-   12            | corpo lista_corpo
+   12 lista_corpo: corpo
+   13            | corpo lista_corpo
 
-   13 corpo: expressoes
-   14      | proposicao
+   14 corpo: expressoes
+   15      | proposicao
 
-   15 expressoes: variavel binarias valor
-   16           | variavel binarias variavel
-   17           | unarias variavel
-   18           | unarias valor
+   16 expressoes: variavel binarias valor
+   17           | variavel binarias variavel
+   18           | unarias variavel
+   19           | unarias valor
 
-   19 proposicao: declaracaoVariavel
-   20           | atribuicao
-   21           | desvioFluxo
-   22           | valor ADDSUB
-   23           | variavel ADDSUB
-   24           | RETURN
-   25           | chamada_funcao
+   20 proposicao: declaracaoVariavel
+   21           | atribuicao
+   22           | desvioFluxo
+   23           | valor ADDSUB
+   24           | variavel ADDSUB
+   25           | RETURN
+   26           | chamada_funcao
 
-   26 chamada_funcao: FN '(' lista_parametros ')'
+   27 $@1: ε
 
-   27 declaracaoVariavel: VAR '=' valor
+   28 chamada_funcao: FN $@1 '(' lista_parametros ')'
 
-   28 condicao: variavel logicas variavel
-   29         | variavel logicas valor
-   30         | valor logicas variavel
+   29 $@2: ε
 
-   31 binarias: LE
-   32         | GE
-   33         | EQ
-   34         | NE
-   35         | GT
-   36         | LT
-   37         | AND
-   38         | OR
-   39         | ADD
-   40         | SUBTRACT
-   41         | MULTIPLY
-   42         | DIVIDE
-   43         | MODULE
+   30 declaracaoVariavel: VAR $@2 '=' valor
 
-   44 unarias: SUBTRACT
-   45        | NOT
+   31 condicao: variavel logicas variavel
+   32         | variavel logicas valor
+   33         | valor logicas variavel
 
-   46 logicas: LE
-   47        | GE
-   48        | EQ
-   49        | NE
-   50        | GT
-   51        | LT
+   34 binarias: LE
+   35         | GE
+   36         | EQ
+   37         | NE
+   38         | GT
+   39         | LT
+   40         | AND
+   41         | OR
+   42         | ADD
+   43         | SUBTRACT
+   44         | MULTIPLY
+   45         | DIVIDE
+   46         | MODULE
 
-   52 desvioFluxo: IF condicao lista_corpo
-   53            | WHILE condicao lista_corpo
+   47 unarias: SUBTRACT
+   48        | NOT
 
-   54 atribuicao: NOME '=' NUMERO
-   55           | NOME '=' NOME
+   49 logicas: LE
+   50        | GE
+   51        | EQ
+   52        | NE
+   53        | GT
+   54        | LT
+
+   55 $@3: ε
+
+   56 desvioFluxo: IF $@3 condicao lista_corpo
+
+   57 $@4: ε
+
+   58 desvioFluxo: WHILE $@4 condicao lista_corpo
+
+   59 atribuicao: variavel '=' valor
+   60           | variavel '=' variavel
 
 
 Terminals, with rules where they appear
 
     $end (0) 0
-    '(' (40) 26
-    ')' (41) 26
-    '=' (61) 27 54 55
+    '(' (40) 28
+    ')' (41) 28
+    '=' (61) 30 59 60
     error (256)
-    FN (258) 26
-    VAR (259) 27
-    WHILE (260) 53
-    IF (261) 52
-    NUMERO (262) 10 54
+    FN (258) 28
+    VAR (259) 30
+    WHILE (260) 58
+    IF (261) 56
+    NUMERO (262) 11
     MAIN (263)
-    NOME (264) 9 54 55
-    LE (265) 31 46
-    GE (266) 32 47
-    EQ (267) 33 48
-    NE (268) 34 49
-    GT (269) 35 50
-    LT (270) 36 51
-    AND (271) 37
-    OR (272) 38
-    ADD (273) 39
-    MULTIPLY (274) 41
-    DIVIDE (275) 42
-    MODULE (276) 43
-    SUBTRACT (277) 40 44
-    ADDSUB (278) 22 23
-    NOT (279) 45
-    RETURN (280) 4 5 24
+    NOME (264) 10
+    LE (265) 34 49
+    GE (266) 35 50
+    EQ (267) 36 51
+    NE (268) 37 52
+    GT (269) 38 53
+    LT (270) 39 54
+    AND (271) 40
+    OR (272) 41
+    ADD (273) 42
+    MULTIPLY (274) 44
+    DIVIDE (275) 45
+    MODULE (276) 46
+    SUBTRACT (277) 43 47
+    ADDSUB (278) 23 24
+    NOT (279) 48
+    RETURN (280) 5 6 25
 
 
 Nonterminals, with rules where they appear
@@ -129,62 +140,74 @@ Nonterminals, with rules where they appear
     $accept (29)
         on left: 0
     programa (30)
-        on left: 1
-        on right: 0
+        on left: 1 2
+        on right: 0 2
     lista_funcoes (31)
-        on left: 2 3
-        on right: 1 3
+        on left: 3 4
+        on right: 1 2 4
     funcao (32)
-        on left: 4 5
-        on right: 2 3
+        on left: 5 6
+        on right: 3 4
     lista_parametros (33)
-        on left: 6 7
-        on right: 4 7 26
+        on left: 7 8
+        on right: 5 8 28
     parametro (34)
-        on left: 8
-        on right: 6 7
-    variavel (35)
         on left: 9
-        on right: 8 15 16 17 23 28 29 30
-    valor (36)
+        on right: 7 8
+    variavel (35)
         on left: 10
-        on right: 15 18 22 27 29 30
+        on right: 9 16 17 18 24 31 32 33 59 60
+    valor (36)
+        on left: 11
+        on right: 16 19 23 30 32 33 59
     lista_corpo (37)
-        on left: 11 12
-        on right: 4 5 12 52 53
+        on left: 12 13
+        on right: 5 6 13 56 58
     corpo (38)
-        on left: 13 14
-        on right: 11 12
+        on left: 14 15
+        on right: 12 13
     expressoes (39)
-        on left: 15 16 17 18
-        on right: 13
-    proposicao (40)
-        on left: 19 20 21 22 23 24 25
+        on left: 16 17 18 19
         on right: 14
+    proposicao (40)
+        on left: 20 21 22 23 24 25 26
+        on right: 15
     chamada_funcao (41)
-        on left: 26
-        on right: 4 5 25
-    declaracaoVariavel (42)
+        on left: 28
+        on right: 5 6 26
+    $@1 (42)
         on left: 27
-        on right: 19
-    condicao (43)
-        on left: 28 29 30
-        on right: 52 53
-    binarias (44)
-        on left: 31 32 33 34 35 36 37 38 39 40 41 42 43
-        on right: 15 16
-    unarias (45)
-        on left: 44 45
-        on right: 17 18
-    logicas (46)
-        on left: 46 47 48 49 50 51
-        on right: 28 29 30
-    desvioFluxo (47)
-        on left: 52 53
-        on right: 21
-    atribuicao (48)
-        on left: 54 55
+        on right: 28
+    declaracaoVariavel (43)
+        on left: 30
         on right: 20
+    $@2 (44)
+        on left: 29
+        on right: 30
+    condicao (45)
+        on left: 31 32 33
+        on right: 56 58
+    binarias (46)
+        on left: 34 35 36 37 38 39 40 41 42 43 44 45 46
+        on right: 16 17
+    unarias (47)
+        on left: 47 48
+        on right: 18 19
+    logicas (48)
+        on left: 49 50 51 52 53 54
+        on right: 31 32 33
+    desvioFluxo (49)
+        on left: 56 58
+        on right: 22
+    $@3 (50)
+        on left: 55
+        on right: 56
+    $@4 (51)
+        on left: 57
+        on right: 58
+    atribuicao (52)
+        on left: 59 60
+        on right: 21
 
 
 State 0
@@ -201,9 +224,11 @@ State 0
 
 State 1
 
-   26 chamada_funcao: FN • '(' lista_parametros ')'
+   28 chamada_funcao: FN • $@1 '(' lista_parametros ')'
 
-    '('  shift, and go to state 6
+    $default  reduce using rule 27 ($@1)
+
+    $@1  go to state 6
 
 
 State 2
@@ -216,63 +241,68 @@ State 2
 State 3
 
     1 programa: lista_funcoes •
+    2         | lista_funcoes • programa
+
+    FN  shift, and go to state 1
 
     $default  reduce using rule 1 (programa)
+
+    programa        go to state 8
+    lista_funcoes   go to state 3
+    funcao          go to state 4
+    chamada_funcao  go to state 5
 
 
 State 4
 
-    2 lista_funcoes: funcao •
-    3              | funcao • lista_funcoes
+    3 lista_funcoes: funcao •
+    4              | funcao • lista_funcoes
 
     FN  shift, and go to state 1
 
-    $default  reduce using rule 2 (lista_funcoes)
+    FN        [reduce using rule 3 (lista_funcoes)]
+    $default  reduce using rule 3 (lista_funcoes)
 
-    lista_funcoes   go to state 8
+    lista_funcoes   go to state 9
     funcao          go to state 4
     chamada_funcao  go to state 5
 
 
 State 5
 
-    4 funcao: chamada_funcao • lista_parametros lista_corpo RETURN
-    5       | chamada_funcao • lista_corpo RETURN
+    5 funcao: chamada_funcao • lista_parametros lista_corpo RETURN
+    6       | chamada_funcao • lista_corpo RETURN
 
     FN        shift, and go to state 1
-    VAR       shift, and go to state 9
-    WHILE     shift, and go to state 10
-    IF        shift, and go to state 11
-    NUMERO    shift, and go to state 12
-    NOME      shift, and go to state 13
-    SUBTRACT  shift, and go to state 14
-    NOT       shift, and go to state 15
-    RETURN    shift, and go to state 16
+    VAR       shift, and go to state 10
+    WHILE     shift, and go to state 11
+    IF        shift, and go to state 12
+    NUMERO    shift, and go to state 13
+    NOME      shift, and go to state 14
+    SUBTRACT  shift, and go to state 15
+    NOT       shift, and go to state 16
+    RETURN    shift, and go to state 17
 
-    lista_parametros    go to state 17
-    parametro           go to state 18
-    variavel            go to state 19
-    valor               go to state 20
-    lista_corpo         go to state 21
-    corpo               go to state 22
-    expressoes          go to state 23
-    proposicao          go to state 24
-    chamada_funcao      go to state 25
-    declaracaoVariavel  go to state 26
-    unarias             go to state 27
-    desvioFluxo         go to state 28
-    atribuicao          go to state 29
+    lista_parametros    go to state 18
+    parametro           go to state 19
+    variavel            go to state 20
+    valor               go to state 21
+    lista_corpo         go to state 22
+    corpo               go to state 23
+    expressoes          go to state 24
+    proposicao          go to state 25
+    chamada_funcao      go to state 26
+    declaracaoVariavel  go to state 27
+    unarias             go to state 28
+    desvioFluxo         go to state 29
+    atribuicao          go to state 30
 
 
 State 6
 
-   26 chamada_funcao: FN '(' • lista_parametros ')'
+   28 chamada_funcao: FN $@1 • '(' lista_parametros ')'
 
-    NOME  shift, and go to state 30
-
-    lista_parametros  go to state 31
-    parametro         go to state 18
-    variavel          go to state 32
+    '('  shift, and go to state 31
 
 
 State 7
@@ -284,704 +314,747 @@ State 7
 
 State 8
 
-    3 lista_funcoes: funcao lista_funcoes •
+    2 programa: lista_funcoes programa •
 
-    $default  reduce using rule 3 (lista_funcoes)
+    $default  reduce using rule 2 (programa)
 
 
 State 9
 
-   27 declaracaoVariavel: VAR • '=' valor
+    4 lista_funcoes: funcao lista_funcoes •
 
-    '='  shift, and go to state 33
+    $default  reduce using rule 4 (lista_funcoes)
 
 
 State 10
 
-   53 desvioFluxo: WHILE • condicao lista_corpo
+   30 declaracaoVariavel: VAR • $@2 '=' valor
 
-    NUMERO  shift, and go to state 12
-    NOME    shift, and go to state 30
+    $default  reduce using rule 29 ($@2)
 
-    variavel  go to state 34
-    valor     go to state 35
-    condicao  go to state 36
+    $@2  go to state 32
 
 
 State 11
 
-   52 desvioFluxo: IF • condicao lista_corpo
+   58 desvioFluxo: WHILE • $@4 condicao lista_corpo
 
-    NUMERO  shift, and go to state 12
-    NOME    shift, and go to state 30
+    $default  reduce using rule 57 ($@4)
 
-    variavel  go to state 34
-    valor     go to state 35
-    condicao  go to state 37
+    $@4  go to state 33
 
 
 State 12
 
-   10 valor: NUMERO •
+   56 desvioFluxo: IF • $@3 condicao lista_corpo
 
-    $default  reduce using rule 10 (valor)
+    $default  reduce using rule 55 ($@3)
+
+    $@3  go to state 34
 
 
 State 13
 
-    9 variavel: NOME •
-   54 atribuicao: NOME • '=' NUMERO
-   55           | NOME • '=' NOME
+   11 valor: NUMERO •
 
-    '='  shift, and go to state 38
-
-    $default  reduce using rule 9 (variavel)
+    $default  reduce using rule 11 (valor)
 
 
 State 14
 
-   44 unarias: SUBTRACT •
+   10 variavel: NOME •
 
-    $default  reduce using rule 44 (unarias)
+    $default  reduce using rule 10 (variavel)
 
 
 State 15
 
-   45 unarias: NOT •
+   47 unarias: SUBTRACT •
 
-    $default  reduce using rule 45 (unarias)
+    $default  reduce using rule 47 (unarias)
 
 
 State 16
 
-   24 proposicao: RETURN •
+   48 unarias: NOT •
 
-    $default  reduce using rule 24 (proposicao)
+    $default  reduce using rule 48 (unarias)
 
 
 State 17
 
-    4 funcao: chamada_funcao lista_parametros • lista_corpo RETURN
+   25 proposicao: RETURN •
 
-    FN        shift, and go to state 1
-    VAR       shift, and go to state 9
-    WHILE     shift, and go to state 10
-    IF        shift, and go to state 11
-    NUMERO    shift, and go to state 12
-    NOME      shift, and go to state 13
-    SUBTRACT  shift, and go to state 14
-    NOT       shift, and go to state 15
-    RETURN    shift, and go to state 16
-
-    variavel            go to state 39
-    valor               go to state 20
-    lista_corpo         go to state 40
-    corpo               go to state 22
-    expressoes          go to state 23
-    proposicao          go to state 24
-    chamada_funcao      go to state 25
-    declaracaoVariavel  go to state 26
-    unarias             go to state 27
-    desvioFluxo         go to state 28
-    atribuicao          go to state 29
+    $default  reduce using rule 25 (proposicao)
 
 
 State 18
 
-    6 lista_parametros: parametro •
-    7                 | parametro • lista_parametros
+    5 funcao: chamada_funcao lista_parametros • lista_corpo RETURN
 
-    NOME  shift, and go to state 30
+    FN        shift, and go to state 1
+    VAR       shift, and go to state 10
+    WHILE     shift, and go to state 11
+    IF        shift, and go to state 12
+    NUMERO    shift, and go to state 13
+    NOME      shift, and go to state 14
+    SUBTRACT  shift, and go to state 15
+    NOT       shift, and go to state 16
+    RETURN    shift, and go to state 17
 
-    NOME      [reduce using rule 6 (lista_parametros)]
-    $default  reduce using rule 6 (lista_parametros)
-
-    lista_parametros  go to state 41
-    parametro         go to state 18
-    variavel          go to state 32
+    variavel            go to state 35
+    valor               go to state 21
+    lista_corpo         go to state 36
+    corpo               go to state 23
+    expressoes          go to state 24
+    proposicao          go to state 25
+    chamada_funcao      go to state 26
+    declaracaoVariavel  go to state 27
+    unarias             go to state 28
+    desvioFluxo         go to state 29
+    atribuicao          go to state 30
 
 
 State 19
 
-    8 parametro: variavel •
-   15 expressoes: variavel • binarias valor
-   16           | variavel • binarias variavel
-   23 proposicao: variavel • ADDSUB
+    7 lista_parametros: parametro •
+    8                 | parametro • lista_parametros
 
-    LE        shift, and go to state 42
-    GE        shift, and go to state 43
-    EQ        shift, and go to state 44
-    NE        shift, and go to state 45
-    GT        shift, and go to state 46
-    LT        shift, and go to state 47
-    AND       shift, and go to state 48
-    OR        shift, and go to state 49
-    ADD       shift, and go to state 50
-    MULTIPLY  shift, and go to state 51
-    DIVIDE    shift, and go to state 52
-    MODULE    shift, and go to state 53
-    SUBTRACT  shift, and go to state 54
-    ADDSUB    shift, and go to state 55
+    NOME  shift, and go to state 14
 
-    SUBTRACT  [reduce using rule 8 (parametro)]
-    $default  reduce using rule 8 (parametro)
+    NOME      [reduce using rule 7 (lista_parametros)]
+    $default  reduce using rule 7 (lista_parametros)
 
-    binarias  go to state 56
+    lista_parametros  go to state 37
+    parametro         go to state 19
+    variavel          go to state 38
 
 
 State 20
 
-   22 proposicao: valor • ADDSUB
+    9 parametro: variavel •
+   16 expressoes: variavel • binarias valor
+   17           | variavel • binarias variavel
+   24 proposicao: variavel • ADDSUB
+   59 atribuicao: variavel • '=' valor
+   60           | variavel • '=' variavel
 
-    ADDSUB  shift, and go to state 57
+    LE        shift, and go to state 39
+    GE        shift, and go to state 40
+    EQ        shift, and go to state 41
+    NE        shift, and go to state 42
+    GT        shift, and go to state 43
+    LT        shift, and go to state 44
+    AND       shift, and go to state 45
+    OR        shift, and go to state 46
+    ADD       shift, and go to state 47
+    MULTIPLY  shift, and go to state 48
+    DIVIDE    shift, and go to state 49
+    MODULE    shift, and go to state 50
+    SUBTRACT  shift, and go to state 51
+    ADDSUB    shift, and go to state 52
+    '='       shift, and go to state 53
+
+    SUBTRACT  [reduce using rule 9 (parametro)]
+    $default  reduce using rule 9 (parametro)
+
+    binarias  go to state 54
 
 
 State 21
 
-    5 funcao: chamada_funcao lista_corpo • RETURN
+   23 proposicao: valor • ADDSUB
 
-    RETURN  shift, and go to state 58
+    ADDSUB  shift, and go to state 55
 
 
 State 22
 
-   11 lista_corpo: corpo •
-   12            | corpo • lista_corpo
+    6 funcao: chamada_funcao lista_corpo • RETURN
 
-    FN        shift, and go to state 1
-    VAR       shift, and go to state 9
-    WHILE     shift, and go to state 10
-    IF        shift, and go to state 11
-    NUMERO    shift, and go to state 12
-    NOME      shift, and go to state 13
-    SUBTRACT  shift, and go to state 14
-    NOT       shift, and go to state 15
-    RETURN    shift, and go to state 16
-
-    FN        [reduce using rule 11 (lista_corpo)]
-    VAR       [reduce using rule 11 (lista_corpo)]
-    WHILE     [reduce using rule 11 (lista_corpo)]
-    IF        [reduce using rule 11 (lista_corpo)]
-    NUMERO    [reduce using rule 11 (lista_corpo)]
-    NOME      [reduce using rule 11 (lista_corpo)]
-    SUBTRACT  [reduce using rule 11 (lista_corpo)]
-    NOT       [reduce using rule 11 (lista_corpo)]
-    RETURN    [reduce using rule 11 (lista_corpo)]
-
-    variavel            go to state 39
-    valor               go to state 20
-    lista_corpo         go to state 59
-    corpo               go to state 22
-    expressoes          go to state 23
-    proposicao          go to state 24
-    chamada_funcao      go to state 25
-    declaracaoVariavel  go to state 26
-    unarias             go to state 27
-    desvioFluxo         go to state 28
-    atribuicao          go to state 29
+    RETURN  shift, and go to state 56
 
 
 State 23
 
-   13 corpo: expressoes •
+   12 lista_corpo: corpo •
+   13            | corpo • lista_corpo
 
-    $default  reduce using rule 13 (corpo)
+    FN        shift, and go to state 1
+    VAR       shift, and go to state 10
+    WHILE     shift, and go to state 11
+    IF        shift, and go to state 12
+    NUMERO    shift, and go to state 13
+    NOME      shift, and go to state 14
+    SUBTRACT  shift, and go to state 15
+    NOT       shift, and go to state 16
+    RETURN    shift, and go to state 17
+
+    FN        [reduce using rule 12 (lista_corpo)]
+    VAR       [reduce using rule 12 (lista_corpo)]
+    WHILE     [reduce using rule 12 (lista_corpo)]
+    IF        [reduce using rule 12 (lista_corpo)]
+    NUMERO    [reduce using rule 12 (lista_corpo)]
+    NOME      [reduce using rule 12 (lista_corpo)]
+    SUBTRACT  [reduce using rule 12 (lista_corpo)]
+    NOT       [reduce using rule 12 (lista_corpo)]
+    RETURN    [reduce using rule 12 (lista_corpo)]
+
+    variavel            go to state 35
+    valor               go to state 21
+    lista_corpo         go to state 57
+    corpo               go to state 23
+    expressoes          go to state 24
+    proposicao          go to state 25
+    chamada_funcao      go to state 26
+    declaracaoVariavel  go to state 27
+    unarias             go to state 28
+    desvioFluxo         go to state 29
+    atribuicao          go to state 30
 
 
 State 24
 
-   14 corpo: proposicao •
+   14 corpo: expressoes •
 
     $default  reduce using rule 14 (corpo)
 
 
 State 25
 
-   25 proposicao: chamada_funcao •
+   15 corpo: proposicao •
 
-    $default  reduce using rule 25 (proposicao)
+    $default  reduce using rule 15 (corpo)
 
 
 State 26
 
-   19 proposicao: declaracaoVariavel •
+   26 proposicao: chamada_funcao •
 
-    $default  reduce using rule 19 (proposicao)
+    $default  reduce using rule 26 (proposicao)
 
 
 State 27
 
-   17 expressoes: unarias • variavel
-   18           | unarias • valor
-
-    NUMERO  shift, and go to state 12
-    NOME    shift, and go to state 30
-
-    variavel  go to state 60
-    valor     go to state 61
-
-
-State 28
-
-   21 proposicao: desvioFluxo •
-
-    $default  reduce using rule 21 (proposicao)
-
-
-State 29
-
-   20 proposicao: atribuicao •
+   20 proposicao: declaracaoVariavel •
 
     $default  reduce using rule 20 (proposicao)
 
 
+State 28
+
+   18 expressoes: unarias • variavel
+   19           | unarias • valor
+
+    NUMERO  shift, and go to state 13
+    NOME    shift, and go to state 14
+
+    variavel  go to state 58
+    valor     go to state 59
+
+
+State 29
+
+   22 proposicao: desvioFluxo •
+
+    $default  reduce using rule 22 (proposicao)
+
+
 State 30
 
-    9 variavel: NOME •
+   21 proposicao: atribuicao •
 
-    $default  reduce using rule 9 (variavel)
+    $default  reduce using rule 21 (proposicao)
 
 
 State 31
 
-   26 chamada_funcao: FN '(' lista_parametros • ')'
+   28 chamada_funcao: FN $@1 '(' • lista_parametros ')'
 
-    ')'  shift, and go to state 62
+    NOME  shift, and go to state 14
+
+    lista_parametros  go to state 60
+    parametro         go to state 19
+    variavel          go to state 38
 
 
 State 32
 
-    8 parametro: variavel •
+   30 declaracaoVariavel: VAR $@2 • '=' valor
 
-    $default  reduce using rule 8 (parametro)
+    '='  shift, and go to state 61
 
 
 State 33
 
-   27 declaracaoVariavel: VAR '=' • valor
+   58 desvioFluxo: WHILE $@4 • condicao lista_corpo
 
-    NUMERO  shift, and go to state 12
+    NUMERO  shift, and go to state 13
+    NOME    shift, and go to state 14
 
-    valor  go to state 63
+    variavel  go to state 62
+    valor     go to state 63
+    condicao  go to state 64
 
 
 State 34
 
-   28 condicao: variavel • logicas variavel
-   29         | variavel • logicas valor
+   56 desvioFluxo: IF $@3 • condicao lista_corpo
 
-    LE  shift, and go to state 64
-    GE  shift, and go to state 65
-    EQ  shift, and go to state 66
-    NE  shift, and go to state 67
-    GT  shift, and go to state 68
-    LT  shift, and go to state 69
+    NUMERO  shift, and go to state 13
+    NOME    shift, and go to state 14
 
-    logicas  go to state 70
+    variavel  go to state 62
+    valor     go to state 63
+    condicao  go to state 65
 
 
 State 35
 
-   30 condicao: valor • logicas variavel
+   16 expressoes: variavel • binarias valor
+   17           | variavel • binarias variavel
+   24 proposicao: variavel • ADDSUB
+   59 atribuicao: variavel • '=' valor
+   60           | variavel • '=' variavel
 
-    LE  shift, and go to state 64
-    GE  shift, and go to state 65
-    EQ  shift, and go to state 66
-    NE  shift, and go to state 67
-    GT  shift, and go to state 68
-    LT  shift, and go to state 69
+    LE        shift, and go to state 39
+    GE        shift, and go to state 40
+    EQ        shift, and go to state 41
+    NE        shift, and go to state 42
+    GT        shift, and go to state 43
+    LT        shift, and go to state 44
+    AND       shift, and go to state 45
+    OR        shift, and go to state 46
+    ADD       shift, and go to state 47
+    MULTIPLY  shift, and go to state 48
+    DIVIDE    shift, and go to state 49
+    MODULE    shift, and go to state 50
+    SUBTRACT  shift, and go to state 51
+    ADDSUB    shift, and go to state 52
+    '='       shift, and go to state 53
 
-    logicas  go to state 71
+    binarias  go to state 54
 
 
 State 36
 
-   53 desvioFluxo: WHILE condicao • lista_corpo
+    5 funcao: chamada_funcao lista_parametros lista_corpo • RETURN
 
-    FN        shift, and go to state 1
-    VAR       shift, and go to state 9
-    WHILE     shift, and go to state 10
-    IF        shift, and go to state 11
-    NUMERO    shift, and go to state 12
-    NOME      shift, and go to state 13
-    SUBTRACT  shift, and go to state 14
-    NOT       shift, and go to state 15
-    RETURN    shift, and go to state 16
-
-    variavel            go to state 39
-    valor               go to state 20
-    lista_corpo         go to state 72
-    corpo               go to state 22
-    expressoes          go to state 23
-    proposicao          go to state 24
-    chamada_funcao      go to state 25
-    declaracaoVariavel  go to state 26
-    unarias             go to state 27
-    desvioFluxo         go to state 28
-    atribuicao          go to state 29
+    RETURN  shift, and go to state 66
 
 
 State 37
 
-   52 desvioFluxo: IF condicao • lista_corpo
+    8 lista_parametros: parametro lista_parametros •
 
-    FN        shift, and go to state 1
-    VAR       shift, and go to state 9
-    WHILE     shift, and go to state 10
-    IF        shift, and go to state 11
-    NUMERO    shift, and go to state 12
-    NOME      shift, and go to state 13
-    SUBTRACT  shift, and go to state 14
-    NOT       shift, and go to state 15
-    RETURN    shift, and go to state 16
-
-    variavel            go to state 39
-    valor               go to state 20
-    lista_corpo         go to state 73
-    corpo               go to state 22
-    expressoes          go to state 23
-    proposicao          go to state 24
-    chamada_funcao      go to state 25
-    declaracaoVariavel  go to state 26
-    unarias             go to state 27
-    desvioFluxo         go to state 28
-    atribuicao          go to state 29
+    $default  reduce using rule 8 (lista_parametros)
 
 
 State 38
 
-   54 atribuicao: NOME '=' • NUMERO
-   55           | NOME '=' • NOME
+    9 parametro: variavel •
 
-    NUMERO  shift, and go to state 74
-    NOME    shift, and go to state 75
+    $default  reduce using rule 9 (parametro)
 
 
 State 39
 
-   15 expressoes: variavel • binarias valor
-   16           | variavel • binarias variavel
-   23 proposicao: variavel • ADDSUB
-
-    LE        shift, and go to state 42
-    GE        shift, and go to state 43
-    EQ        shift, and go to state 44
-    NE        shift, and go to state 45
-    GT        shift, and go to state 46
-    LT        shift, and go to state 47
-    AND       shift, and go to state 48
-    OR        shift, and go to state 49
-    ADD       shift, and go to state 50
-    MULTIPLY  shift, and go to state 51
-    DIVIDE    shift, and go to state 52
-    MODULE    shift, and go to state 53
-    SUBTRACT  shift, and go to state 54
-    ADDSUB    shift, and go to state 55
-
-    binarias  go to state 56
-
-
-State 40
-
-    4 funcao: chamada_funcao lista_parametros lista_corpo • RETURN
-
-    RETURN  shift, and go to state 76
-
-
-State 41
-
-    7 lista_parametros: parametro lista_parametros •
-
-    $default  reduce using rule 7 (lista_parametros)
-
-
-State 42
-
-   31 binarias: LE •
-
-    $default  reduce using rule 31 (binarias)
-
-
-State 43
-
-   32 binarias: GE •
-
-    $default  reduce using rule 32 (binarias)
-
-
-State 44
-
-   33 binarias: EQ •
-
-    $default  reduce using rule 33 (binarias)
-
-
-State 45
-
-   34 binarias: NE •
+   34 binarias: LE •
 
     $default  reduce using rule 34 (binarias)
 
 
-State 46
+State 40
 
-   35 binarias: GT •
+   35 binarias: GE •
 
     $default  reduce using rule 35 (binarias)
 
 
-State 47
+State 41
 
-   36 binarias: LT •
+   36 binarias: EQ •
 
     $default  reduce using rule 36 (binarias)
 
 
-State 48
+State 42
 
-   37 binarias: AND •
+   37 binarias: NE •
 
     $default  reduce using rule 37 (binarias)
 
 
-State 49
+State 43
 
-   38 binarias: OR •
+   38 binarias: GT •
 
     $default  reduce using rule 38 (binarias)
 
 
-State 50
+State 44
 
-   39 binarias: ADD •
+   39 binarias: LT •
 
     $default  reduce using rule 39 (binarias)
 
 
-State 51
+State 45
 
-   41 binarias: MULTIPLY •
-
-    $default  reduce using rule 41 (binarias)
-
-
-State 52
-
-   42 binarias: DIVIDE •
-
-    $default  reduce using rule 42 (binarias)
-
-
-State 53
-
-   43 binarias: MODULE •
-
-    $default  reduce using rule 43 (binarias)
-
-
-State 54
-
-   40 binarias: SUBTRACT •
+   40 binarias: AND •
 
     $default  reduce using rule 40 (binarias)
 
 
+State 46
+
+   41 binarias: OR •
+
+    $default  reduce using rule 41 (binarias)
+
+
+State 47
+
+   42 binarias: ADD •
+
+    $default  reduce using rule 42 (binarias)
+
+
+State 48
+
+   44 binarias: MULTIPLY •
+
+    $default  reduce using rule 44 (binarias)
+
+
+State 49
+
+   45 binarias: DIVIDE •
+
+    $default  reduce using rule 45 (binarias)
+
+
+State 50
+
+   46 binarias: MODULE •
+
+    $default  reduce using rule 46 (binarias)
+
+
+State 51
+
+   43 binarias: SUBTRACT •
+
+    $default  reduce using rule 43 (binarias)
+
+
+State 52
+
+   24 proposicao: variavel ADDSUB •
+
+    $default  reduce using rule 24 (proposicao)
+
+
+State 53
+
+   59 atribuicao: variavel '=' • valor
+   60           | variavel '=' • variavel
+
+    NUMERO  shift, and go to state 13
+    NOME    shift, and go to state 14
+
+    variavel  go to state 67
+    valor     go to state 68
+
+
+State 54
+
+   16 expressoes: variavel binarias • valor
+   17           | variavel binarias • variavel
+
+    NUMERO  shift, and go to state 13
+    NOME    shift, and go to state 14
+
+    variavel  go to state 69
+    valor     go to state 70
+
+
 State 55
 
-   23 proposicao: variavel ADDSUB •
+   23 proposicao: valor ADDSUB •
 
     $default  reduce using rule 23 (proposicao)
 
 
 State 56
 
-   15 expressoes: variavel binarias • valor
-   16           | variavel binarias • variavel
+    6 funcao: chamada_funcao lista_corpo RETURN •
 
-    NUMERO  shift, and go to state 12
-    NOME    shift, and go to state 30
-
-    variavel  go to state 77
-    valor     go to state 78
+    $default  reduce using rule 6 (funcao)
 
 
 State 57
 
-   22 proposicao: valor ADDSUB •
+   13 lista_corpo: corpo lista_corpo •
 
-    $default  reduce using rule 22 (proposicao)
+    $default  reduce using rule 13 (lista_corpo)
 
 
 State 58
 
-    5 funcao: chamada_funcao lista_corpo RETURN •
-
-    $default  reduce using rule 5 (funcao)
-
-
-State 59
-
-   12 lista_corpo: corpo lista_corpo •
-
-    $default  reduce using rule 12 (lista_corpo)
-
-
-State 60
-
-   17 expressoes: unarias variavel •
-
-    $default  reduce using rule 17 (expressoes)
-
-
-State 61
-
-   18 expressoes: unarias valor •
+   18 expressoes: unarias variavel •
 
     $default  reduce using rule 18 (expressoes)
 
 
+State 59
+
+   19 expressoes: unarias valor •
+
+    $default  reduce using rule 19 (expressoes)
+
+
+State 60
+
+   28 chamada_funcao: FN $@1 '(' lista_parametros • ')'
+
+    ')'  shift, and go to state 71
+
+
+State 61
+
+   30 declaracaoVariavel: VAR $@2 '=' • valor
+
+    NUMERO  shift, and go to state 13
+
+    valor  go to state 72
+
+
 State 62
 
-   26 chamada_funcao: FN '(' lista_parametros ')' •
+   31 condicao: variavel • logicas variavel
+   32         | variavel • logicas valor
 
-    $default  reduce using rule 26 (chamada_funcao)
+    LE  shift, and go to state 73
+    GE  shift, and go to state 74
+    EQ  shift, and go to state 75
+    NE  shift, and go to state 76
+    GT  shift, and go to state 77
+    LT  shift, and go to state 78
+
+    logicas  go to state 79
 
 
 State 63
 
-   27 declaracaoVariavel: VAR '=' valor •
+   33 condicao: valor • logicas variavel
 
-    $default  reduce using rule 27 (declaracaoVariavel)
+    LE  shift, and go to state 73
+    GE  shift, and go to state 74
+    EQ  shift, and go to state 75
+    NE  shift, and go to state 76
+    GT  shift, and go to state 77
+    LT  shift, and go to state 78
+
+    logicas  go to state 80
 
 
 State 64
 
-   46 logicas: LE •
+   58 desvioFluxo: WHILE $@4 condicao • lista_corpo
 
-    $default  reduce using rule 46 (logicas)
+    FN        shift, and go to state 1
+    VAR       shift, and go to state 10
+    WHILE     shift, and go to state 11
+    IF        shift, and go to state 12
+    NUMERO    shift, and go to state 13
+    NOME      shift, and go to state 14
+    SUBTRACT  shift, and go to state 15
+    NOT       shift, and go to state 16
+    RETURN    shift, and go to state 17
+
+    variavel            go to state 35
+    valor               go to state 21
+    lista_corpo         go to state 81
+    corpo               go to state 23
+    expressoes          go to state 24
+    proposicao          go to state 25
+    chamada_funcao      go to state 26
+    declaracaoVariavel  go to state 27
+    unarias             go to state 28
+    desvioFluxo         go to state 29
+    atribuicao          go to state 30
 
 
 State 65
 
-   47 logicas: GE •
+   56 desvioFluxo: IF $@3 condicao • lista_corpo
 
-    $default  reduce using rule 47 (logicas)
+    FN        shift, and go to state 1
+    VAR       shift, and go to state 10
+    WHILE     shift, and go to state 11
+    IF        shift, and go to state 12
+    NUMERO    shift, and go to state 13
+    NOME      shift, and go to state 14
+    SUBTRACT  shift, and go to state 15
+    NOT       shift, and go to state 16
+    RETURN    shift, and go to state 17
+
+    variavel            go to state 35
+    valor               go to state 21
+    lista_corpo         go to state 82
+    corpo               go to state 23
+    expressoes          go to state 24
+    proposicao          go to state 25
+    chamada_funcao      go to state 26
+    declaracaoVariavel  go to state 27
+    unarias             go to state 28
+    desvioFluxo         go to state 29
+    atribuicao          go to state 30
 
 
 State 66
 
-   48 logicas: EQ •
+    5 funcao: chamada_funcao lista_parametros lista_corpo RETURN •
 
-    $default  reduce using rule 48 (logicas)
+    $default  reduce using rule 5 (funcao)
 
 
 State 67
 
-   49 logicas: NE •
+   60 atribuicao: variavel '=' variavel •
 
-    $default  reduce using rule 49 (logicas)
+    $default  reduce using rule 60 (atribuicao)
 
 
 State 68
 
-   50 logicas: GT •
+   59 atribuicao: variavel '=' valor •
 
-    $default  reduce using rule 50 (logicas)
+    $default  reduce using rule 59 (atribuicao)
 
 
 State 69
 
-   51 logicas: LT •
+   17 expressoes: variavel binarias variavel •
 
-    $default  reduce using rule 51 (logicas)
+    $default  reduce using rule 17 (expressoes)
 
 
 State 70
 
-   28 condicao: variavel logicas • variavel
-   29         | variavel logicas • valor
-
-    NUMERO  shift, and go to state 12
-    NOME    shift, and go to state 30
-
-    variavel  go to state 79
-    valor     go to state 80
-
-
-State 71
-
-   30 condicao: valor logicas • variavel
-
-    NOME  shift, and go to state 30
-
-    variavel  go to state 81
-
-
-State 72
-
-   53 desvioFluxo: WHILE condicao lista_corpo •
-
-    $default  reduce using rule 53 (desvioFluxo)
-
-
-State 73
-
-   52 desvioFluxo: IF condicao lista_corpo •
-
-    $default  reduce using rule 52 (desvioFluxo)
-
-
-State 74
-
-   54 atribuicao: NOME '=' NUMERO •
-
-    $default  reduce using rule 54 (atribuicao)
-
-
-State 75
-
-   55 atribuicao: NOME '=' NOME •
-
-    $default  reduce using rule 55 (atribuicao)
-
-
-State 76
-
-    4 funcao: chamada_funcao lista_parametros lista_corpo RETURN •
-
-    $default  reduce using rule 4 (funcao)
-
-
-State 77
-
-   16 expressoes: variavel binarias variavel •
+   16 expressoes: variavel binarias valor •
 
     $default  reduce using rule 16 (expressoes)
 
 
+State 71
+
+   28 chamada_funcao: FN $@1 '(' lista_parametros ')' •
+
+    $default  reduce using rule 28 (chamada_funcao)
+
+
+State 72
+
+   30 declaracaoVariavel: VAR $@2 '=' valor •
+
+    $default  reduce using rule 30 (declaracaoVariavel)
+
+
+State 73
+
+   49 logicas: LE •
+
+    $default  reduce using rule 49 (logicas)
+
+
+State 74
+
+   50 logicas: GE •
+
+    $default  reduce using rule 50 (logicas)
+
+
+State 75
+
+   51 logicas: EQ •
+
+    $default  reduce using rule 51 (logicas)
+
+
+State 76
+
+   52 logicas: NE •
+
+    $default  reduce using rule 52 (logicas)
+
+
+State 77
+
+   53 logicas: GT •
+
+    $default  reduce using rule 53 (logicas)
+
+
 State 78
 
-   15 expressoes: variavel binarias valor •
+   54 logicas: LT •
 
-    $default  reduce using rule 15 (expressoes)
+    $default  reduce using rule 54 (logicas)
 
 
 State 79
 
-   28 condicao: variavel logicas variavel •
+   31 condicao: variavel logicas • variavel
+   32         | variavel logicas • valor
 
-    $default  reduce using rule 28 (condicao)
+    NUMERO  shift, and go to state 13
+    NOME    shift, and go to state 14
+
+    variavel  go to state 83
+    valor     go to state 84
 
 
 State 80
 
-   29 condicao: variavel logicas valor •
+   33 condicao: valor logicas • variavel
 
-    $default  reduce using rule 29 (condicao)
+    NOME  shift, and go to state 14
+
+    variavel  go to state 85
 
 
 State 81
 
-   30 condicao: valor logicas variavel •
+   58 desvioFluxo: WHILE $@4 condicao lista_corpo •
 
-    $default  reduce using rule 30 (condicao)
+    $default  reduce using rule 58 (desvioFluxo)
+
+
+State 82
+
+   56 desvioFluxo: IF $@3 condicao lista_corpo •
+
+    $default  reduce using rule 56 (desvioFluxo)
+
+
+State 83
+
+   31 condicao: variavel logicas variavel •
+
+    $default  reduce using rule 31 (condicao)
+
+
+State 84
+
+   32 condicao: variavel logicas valor •
+
+    $default  reduce using rule 32 (condicao)
+
+
+State 85
+
+   33 condicao: valor logicas variavel •
+
+    $default  reduce using rule 33 (condicao)

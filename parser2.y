@@ -30,89 +30,52 @@
 
 %%
 
-
-programa: lista_funcoes
-| lista_funcoes programa
-;
+programa: corpo programa;
 
 
-lista_funcoes: funcao 
-| funcao lista_funcoes
-;
+corpo: funcao
+| funcao corpo 
 
-funcao: chamada_funcao   lista_parametros  lista_corpo RETURN { add('PR'); }
-| chamada_funcao  lista_corpo RETURN { add('PR'); }
-;
+
+funcao: FN '(' lista_parametros ')' '{' body RETURN valor ';' '}'
+
+
 
 lista_parametros: parametro
 | parametro lista_parametros
 ;
 
-
-
-
-parametro: variavel
+parametro: NOME
 ;
 
-variavel: NOME { add('V'); } ;
-
-valor: NUMERO { add('C');}  ;
-
-
-
-lista_corpo: corpo 
-| corpo lista_corpo 
-;
-
-corpo: expressoes
-|proposicao
-;
-
-expressoes:variavel  binarias valor 
-| variavel binarias variavel
-| unarias variavel 
-| unarias valor
-
-
+body: proposicoes 
+| proposicoes body; 
 
 proposicao: declaracaoVariavel
-| atribuicao
-| desvioFluxo
-| valor ADDSUB { add('PR'); }
-| variavel ADDSUB { add('PR'); }
-| RETURN  { add('PR'); }
-| chamada_funcao
-;
+|atribuicao
+|desvioFluxo
+|operacoes 
 
-chamada_funcao: FN { add('F'); }'(' lista_parametros ')'
-;
 
-declaracaoVariavel: VAR { add('V'); } '=' valor
-;
+declaracaoVariavel: VAR  '=' valor
+
+desvioFluxo: IF '(' condicao  ')' '{' body '}'
+| WHILE '(' condicao ')' '{' body '}'
+
 
 condicao: variavel logicas variavel
-| variavel logicas valor 
-| valor logicas variavel
-;
-
-binarias: LE | GE | EQ | NE | GT | LT | AND | OR  | ADD | SUBTRACT | MULTIPLY | DIVIDE | MODULE  { add('PR'); }
-;
-
-unarias: SUBTRACT | NOT  { add('PR'); }
-;
-
-logicas: LE | GE | EQ | NE | GT | LT { add('PR'); }
-;
+|variavel logicas valor
+|valor logicas valor 
 
 
 
-desvioFluxo: IF  { add('PR'); } condicao  lista_corpo 
-| WHILE { add('PR'); }  condicao  lista_corpo 
-;
+valor: NUMERO;
+variavel: NOME; 
 
-atribuicao:  variavel '=' valor
-| variavel '=' variavel
-;
+
+
+
+
 
 %%
 
